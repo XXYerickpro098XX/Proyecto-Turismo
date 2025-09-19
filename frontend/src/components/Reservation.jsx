@@ -8,7 +8,7 @@ export default function ReservationForm() {
   const handleReserve = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/reservations", { tour: tourId, seats });
+      const res = await api.post("/reservas", { tour, seats, usuario });
       alert("Reserva creada con ID: " + res.data._id);
     } catch (err) {
       alert(err.response?.data?.message || "Error al reservar");

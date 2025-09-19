@@ -1,9 +1,10 @@
-// backend/src/app.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./db.js";
 import tourRoutes from "./routes/RoutesTour.js";
+import usuarioRoutes from "./routes/RoutesUsuario.js";
+import reservaRoutes from "./routes/RoutesReserva.js";
 
 dotenv.config();
 const app = express();
@@ -17,6 +18,8 @@ connectDB();
 
 // Rutas
 app.use("/api/tours", tourRoutes);
+app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/reservas", reservaRoutes);
 
 // Servidor
 const PORT = process.env.PORT || 4000;

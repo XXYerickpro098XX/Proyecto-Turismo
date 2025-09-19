@@ -25,7 +25,7 @@ export default function ToursList() {
           <div key={t._id} className="border p-4 rounded shadow">
             {t.images?.[0] && (
               <img
-                src={`http://localhost:5000${t.images[0]}`}
+                src={`http://localhost:4000${t.images[0]}`}
                 alt={t.title}
                 className="w-full h-40 object-cover mb-2 rounded"
               />
