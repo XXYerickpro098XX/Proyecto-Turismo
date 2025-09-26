@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { MapPin, Users, Calendar, TreePine, Bird, Cloud, Flower2, Mountain } from "lucide-react";
 import api from "../api";
 
@@ -102,119 +103,127 @@ export default function Register({ onRegister }) {
         </div>
       </div>
 
-<Card className="w-full max-w-md relative z-10 bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl animate-fade-in-up">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center space-x-2 text-primary">
-            <MapPin className="h-6 w-6" />
-            <Users className="h-6 w-6" />
-            <Calendar className="h-6 w-6" />
-          </div>
-          <CardTitle className="text-2xl font-bold text-card-foreground">
-            Registro de Usuario
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Únase a nuestra plataforma para gestionar tours, guías y reservas
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Nombre y Apellido */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">Nombre</Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Apellido</Label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Correo */}
-            <div className="space-y-2">
-              <Label htmlFor="email">Correo</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            {/* Teléfono (no lo guarda backend, pero lo dejamos visible) */}
-            <div className="space-y-2">
-              <Label htmlFor="phone">Teléfono</Label>
-              <Input
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            {/* Tipo de Usuario */}
-            <div className="space-y-2">
-              <Label htmlFor="userType">Tipo de Usuario</Label>
-              <select
-                id="userType"
-                name="userType"
-                value={formData.userType}
-                onChange={handleInputChange}
-                className="w-full border rounded p-2"
-              >
-                <option value="customer">Cliente</option>
-                <option value="guide">Guía Turístico</option>
-                <option value="admin">Operador/Admin</option>
-              </select>
-            </div>
-
-            {/* Contraseña */}
-            <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-                minLength={6}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? "Registrando..." : "Crear Cuenta"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+<div className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-sm border rounded-lg shadow-2xl animate-in fade-in slide-in-from-bottom duration-700 p-6">
+  <div className="text-center space-y-2 mb-6">
+    <div className="flex justify-center space-x-2 text-blue-500">
+      <MapPin className="h-6 w-6" />
+      <Users className="h-6 w-6" />
+      <Calendar className="h-6 w-6" />
     </div>
-  );
-}
+    <h1 className="text-2xl font-bold">Registro de Usuario</h1>
+    <p className="text-gray-600">
+      Únase a nuestra plataforma para gestionar tours, guías y reservas
+    </p>
+  </div>
+
+  <form onSubmit={handleSubmit} className="space-y-4">
+    {/* Nombre y Apellido */}
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label htmlFor="firstName" className="block mb-1 font-medium">Nombre</label>
+        <input
+          id="firstName"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleInputChange}
+          required
+          className="w-full border rounded p-2"
+        />
+      </div>
+      <div>
+        <label htmlFor="lastName" className="block mb-1 font-medium">Apellido</label>
+        <input
+          id="lastName"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleInputChange}
+          required
+          className="w-full border rounded p-2"
+        />
+      </div>
+    </div>
+
+    {/* Correo */}
+    <div>
+      <label htmlFor="email" className="block mb-1 font-medium">Correo</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        value={formData.email}
+        onChange={handleInputChange}
+        required
+        className="w-full border rounded p-2"
+      />
+    </div>
+
+    {/* Teléfono */}
+    <div>
+      <label htmlFor="phone" className="block mb-1 font-medium">Teléfono</label>
+      <input
+        id="phone"
+        name="phone"
+        value={formData.phone}
+        onChange={handleInputChange}
+        className="w-full border rounded p-2"
+      />
+    </div>
+
+    {/* Tipo de Usuario */}
+    <div>
+      <label htmlFor="userType" className="block mb-1 font-medium">Tipo de Usuario</label>
+      <select
+        id="userType"
+        name="userType"
+        value={formData.userType}
+        onChange={handleInputChange}
+        className="w-full border rounded p-2"
+      >
+        <option value="customer">Cliente</option>
+        <option value="guide">Guía Turístico</option>
+        <option value="admin">Operador/Admin</option>
+      </select>
+    </div>
+
+    {/* Contraseñas */}
+    <div>
+      <label htmlFor="password" className="block mb-1 font-medium">Contraseña</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        value={formData.password}
+        onChange={handleInputChange}
+        required
+        minLength={6}
+        className="w-full border rounded p-2"
+      />
+    </div>
+    <div>
+      <label htmlFor="confirmPassword" className="block mb-1 font-medium">Confirmar Contraseña</label>
+      <input
+        id="confirmPassword"
+        name="confirmPassword"
+        type="password"
+        value={formData.confirmPassword}
+        onChange={handleInputChange}
+        required
+        className="w-full border rounded p-2"
+      />
+    </div>
+
+    <button
+      type="submit"
+      disabled={isLoading}
+      className="w-full bg-blue-500 text-white py-2 rounded shadow-md hover:bg-blue-600 transition-all disabled:opacity-50"
+    >
+    
+      {isLoading ? "Registrando..." : "Crear Cuenta"}
+    </button>
+    <Link to="/" className="block mb-1 font-medium text-blue-300">
+    Inicie sesion, si tiene cuenta
+    </Link>
+  </form>
+  </div>
+</div>
+  )}

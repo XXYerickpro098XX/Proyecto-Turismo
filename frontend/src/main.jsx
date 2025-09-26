@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import Login from "./components/Login";
-import Register from "./components/register";
+import Register from "./components/Register";
 import Reservation from "./components/Reservation";
 import Tour from "./components/Tour";
 

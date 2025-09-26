@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { MapPin, Users, Calendar, TreePine, Bird, Cloud, Flower2, Mountain } from "lucide-react";
 import api from "../api"; // login real con tu backend
 
@@ -123,6 +124,10 @@ export default function LoginForm({ onLogin }) {
           >
             {isLoading ? "Iniciando sesión..." : "Entrar"}
           </button>
+          <Link to="/registro" className="block mb-1 font-medium text-blue-300">
+          ¿No tiene cuenta? Cree una
+          </Link>
+
         </form>
       </div>
     </div>

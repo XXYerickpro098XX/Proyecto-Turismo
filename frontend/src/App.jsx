@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useState } from "react";
 
 import Login from "./components/Login";
-import Register from "./components/register";
+import Register from "./components/Register"; // 👈 con R mayúscula
 import Reservation from "./components/Reservation";
+import Landing from "./components/Landing"; // 👈 asegúrate que el archivo sea Landing.jsx con L mayúscula
 
 export default function App() {
   const [user, setUser] = useState(null); // Usuario logueado
@@ -12,25 +13,31 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Ruta por defecto: si hay usuario, va a reservas, si no, login */}
-        <Route
-          path="/"
-          element={user ? <Navigate to="/reservas" /> : <Login onLogin={setUser} />}
-        />
-
-        {/* Ruta de registro */}
+        {/* Ruta de registro (pública) */}
         <Route
           path="/registro"
           element={<Register onRegister={setUser} />}
         />
 
-        {/* Ruta de reservas (solo si hay usuario) */}
+        {/* Ruta raíz: login si no hay user, landing si sí */}
+        <Route
+          path="/"
+          element={user ? <Navigate to="/Landing" /> : <Login onLogin={setUser} />}
+        />
+
+        {/* Ruta de landing (solo usuarios logueados) */}
+        <Route
+          path="/landing"
+          element={user ? <Landing user={user} /> : <Navigate to="/" />}
+        />
+
+        {/* Ruta de reservas (solo usuarios logueados) */}
         <Route
           path="/reservas"
           element={user ? <Reservation user={user} /> : <Navigate to="/" />}
         />
 
-        {/* Ruta fallback: cualquier otra dirección redirige al home */}
+        {/* Ruta fallback */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
