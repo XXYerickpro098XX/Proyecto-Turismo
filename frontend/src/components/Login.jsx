@@ -16,6 +16,7 @@ export default function LoginForm({ onLogin }) {
     try {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // ✅ guardar usuario también
       onLogin?.(res.data.user);
     } catch (err) {
       alert(err.response?.data?.message || "Error al iniciar sesión");

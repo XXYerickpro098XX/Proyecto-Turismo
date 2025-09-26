@@ -3,13 +3,16 @@ import api from "../api";
 
 export default function ReservationForm() {
   const [tourId, setTourId] = useState("");
-  const [seats, setSeats] = useState(1);
+  const [guests, setGuests] = useState(1);
 
   const handleReserve = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/reservas", { tour, seats, usuario });
-      alert("Reserva creada con ID: " + res.data._id);
+      const res = await api.post("/reservations", {
+        tour: tourId,
+        guests: Number(guests),
+      });
+      alert("✅ Reserva creada con ID: " + res.data._id);
     } catch (err) {
       alert(err.response?.data?.message || "Error al reservar");
     }
@@ -28,9 +31,9 @@ export default function ReservationForm() {
       />
       <input
         type="number"
-        value={seats}
+        value={guests}
         min="1"
-        onChange={(e) => setSeats(e.target.value)}
+        onChange={(e) => setGuests(e.target.value)}
         className="border p-2 w-full"
         required
       />

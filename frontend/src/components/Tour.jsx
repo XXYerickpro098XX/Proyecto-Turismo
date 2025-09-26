@@ -10,7 +10,7 @@ export default function ToursList() {
         const res = await api.get("/tours");
         setTours(res.data);
       } catch (err) {
-        console.error(err);
+        console.error("Error cargando tours:", err);
       }
     };
     fetchTours();
@@ -23,9 +23,10 @@ export default function ToursList() {
       <div className="grid gap-4 md:grid-cols-2">
         {tours.map((t) => (
           <div key={t._id} className="border p-4 rounded shadow">
-            {t.images?.[0] && (
+            {/* Foto principal (si existe) */}
+            {t.photos?.[0] && (
               <img
-                src={`http://localhost:4000${t.images[0]}`}
+                src={t.photos[0]} // si guardas URLs completas
                 alt={t.title}
                 className="w-full h-40 object-cover mb-2 rounded"
               />
@@ -33,8 +34,16 @@ export default function ToursList() {
             <h3 className="font-bold">{t.title}</h3>
             <p>{t.description}</p>
             <p className="text-sm text-gray-600">
-              Precio: ₡{t.price} | Duración: {t.durationHours}h
+              📍 {t.location || "Ubicación no especificada"}
             </p>
+            <p className="text-sm text-gray-600">
+              💲 Precio: ₡{t.price}
+            </p>
+            {t.date && (
+              <p className="text-xs text-gray-500">
+                Fecha: {new Date(t.date).toLocaleDateString()}
+              </p>
+            )}
             <p className="text-xs text-gray-500">ID: {t._id}</p>
           </div>
         ))}

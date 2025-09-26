@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MapPin, Users, Calendar, TreePine, Bird, Cloud, Flower2, Mountain } from "lucide-react";
-import api from "../api"; // 
+import api from "../api";
 
 export default function Register({ onRegister }) {
   const [formData, setFormData] = useState({
@@ -12,51 +12,45 @@ export default function Register({ onRegister }) {
     password: "",
     confirmPassword: "",
     phone: "",
-    userType: "customer",
-  })
-  const [isLoading, setIsLoading] = useState(false)
+    userType: "customer", // lo usaremos como rol
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
- const handleInputChange = (e) => {
-  const { name, value } = e.target
-  setFormData((prev) => ({ ...prev, [name]: value }))
-}
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-const handleSubmit = async (e) => {
-  e.preventDefault()
-  // resto del código...
-
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match")
-      return
+      alert("Las contraseñas no coinciden");
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      // Replace with your actual API endpoint
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
+      // Mapeo a lo que espera el backend
+      const payload = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        password: formData.password,
+        role: formData.userType === "customer" ? "user" : formData.userType,
+      };
 
-      if (!res.ok) {
-        throw new Error("Registration failed")
-      }
+      const res = await api.post("/auth/register", payload);
 
-      const data = await res.json()
-      localStorage.setItem("token", data.token)
-      onRegister?.(data.user)
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      onRegister?.(res.data.user);
     } catch (err) {
-      alert("Error registering. Please try again.")
+      alert(err.response?.data?.message || "Error en el registro");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
@@ -108,152 +102,119 @@ const handleSubmit = async (e) => {
         </div>
       </div>
 
-      <Card className="w-full max-w-md relative z-10 bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl animate-fade-in-up">
+<Card className="w-full max-w-md relative z-10 bg-card/80 backdrop-blur-sm border-border/50 shadow-2xl animate-fade-in-up">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center space-x-2 text-primary">
             <MapPin className="h-6 w-6" />
             <Users className="h-6 w-6" />
             <Calendar className="h-6 w-6" />
           </div>
-          <CardTitle className="text-2xl font-bold text-card-foreground">Registro de Usuario</CardTitle>
+          <CardTitle className="text-2xl font-bold text-card-foreground">
+            Registro de Usuario
+          </CardTitle>
           <CardDescription className="text-muted-foreground">
             Únase a nuestra plataforma para gestionar tours, guías y reservas
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Nombre y Apellido */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-card-foreground">
-                  Nombre
-                </Label>
+                <Label htmlFor="firstName">Nombre</Label>
                 <Input
                   id="firstName"
                   name="firstName"
-                  type="text"
-                  placeholder="Tu nombre"
                   value={formData.firstName}
                   onChange={handleInputChange}
                   required
-                  className="w-full bg-input border-border focus:ring-ring"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-card-foreground">
-                  Apellido
-                </Label>
+                <Label htmlFor="lastName">Apellido</Label>
                 <Input
                   id="lastName"
                   name="lastName"
-                  type="text"
-                  placeholder="Tu apellido"
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
-                  className="w-full bg-input border-border focus:ring-ring"
                 />
               </div>
             </div>
 
+            {/* Correo */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-card-foreground">
-                Correo Electrónico
-              </Label>
+              <Label htmlFor="email">Correo</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
-                placeholder="tu@email.com"
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full bg-input border-border focus:ring-ring"
               />
             </div>
 
+            {/* Teléfono (no lo guarda backend, pero lo dejamos visible) */}
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-card-foreground">
-                Teléfono
-              </Label>
+              <Label htmlFor="phone">Teléfono</Label>
               <Input
                 id="phone"
                 name="phone"
-                type="tel"
-                placeholder="+1 (555) 123-4567"
                 value={formData.phone}
                 onChange={handleInputChange}
-                required
-                className="w-full bg-input border-border focus:ring-ring"
               />
             </div>
 
+            {/* Tipo de Usuario */}
             <div className="space-y-2">
-              <Label htmlFor="userType" className="text-card-foreground">
-                Tipo de Usuario
-              </Label>
+              <Label htmlFor="userType">Tipo de Usuario</Label>
               <select
                 id="userType"
                 name="userType"
                 value={formData.userType}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 bg-input border border-border rounded-md focus:ring-ring focus:border-ring"
+                className="w-full border rounded p-2"
               >
                 <option value="customer">Cliente</option>
                 <option value="guide">Guía Turístico</option>
-                <option value="operator">Operador de Tours</option>
+                <option value="admin">Operador/Admin</option>
               </select>
             </div>
 
+            {/* Contraseña */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-card-foreground">
-                Contraseña
-              </Label>
+              <Label htmlFor="password">Contraseña</Label>
               <Input
                 id="password"
                 name="password"
                 type="password"
-                placeholder="Mínimo 8 caracteres"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
-                minLength={8}
-                className="w-full bg-input border-border focus:ring-ring"
+                minLength={6}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-card-foreground">
-                Confirmar Contraseña
-              </Label>
+              <Label htmlFor="confirmPassword">Confirmar Contraseña</Label>
               <Input
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
-                placeholder="Repite tu contraseña"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 required
-                className="w-full bg-input border-border focus:ring-ring"
               />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-200 hover:animate-bounce-gentle shadow-xl"
-              disabled={isLoading}
-            >
+            <Button type="submit" disabled={isLoading} className="w-full">
               {isLoading ? "Registrando..." : "Crear Cuenta"}
             </Button>
           </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-slate-600">
-              ¿Ya tienes cuenta?{" "}
-              <button className="text-primary hover:underline font-medium">Inicia sesión aquí</button>
-            </p>
-          </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
