@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba API</title>
+</head>
+<body>
+  <h1>Probar API Turismo</h1>
+
+  <h2>Registro</h2>
+  <form id="registerForm">
+    <input type="text" id="name" placeholder="Nombre" required><br>
+    <input type="email" id="email" placeholder="Email" required><br>
+    <input type="password" id="password" placeholder="Contraseña" required><br>
+    <input type="text" id="role" placeholder="Rol (ej: admin)" value="user"><br>
+    <button type="submit">Registrarse</button>
+  </form>
+
+  <h2>Login</h2>
+  <form id="loginForm">
+    <input type="email" id="loginEmail" placeholder="Email" required><br>
+    <input type="password" id="loginPassword" placeholder="Contraseña" required><br>
+    <button type="submit">Iniciar sesión</button>
+  </form>
+
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById("output");
+
+    // Registro
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const res = await fetch("http://localhost:4000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          role: document.getElementById("role").value
+        })
+      });
+      const data = await res.json();
+      output.textContent = JSON.stringify(data, null, 2);
+    });
+
+    // Login
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const res = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: document.getElementById("loginEmail").value,
+          password: document.getElementById("loginPassword").value
+        })
+      });
+      const data = await res.json();
+      output.textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>

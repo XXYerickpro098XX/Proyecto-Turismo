@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./db.js";
-import tourRoutes from "./routes/RoutesTour.js";
-import usuarioRoutes from "./routes/RoutesUsuario.js";
-import reservaRoutes from "./routes/RoutesReserva.js";
+import tourRoutes from "./routes/tours.js";
+import usuarioRoutes from "./routes/auth.js";
+import reservaRoutes from "./routes/reservations.js";
 
 dotenv.config();
 const app = express();

@@ -12,25 +12,25 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 // Topology / routes
-const authRoutes = require('src/routes/auth')
-const tourRoutes = require('src/routes/tours')
-const reservationRoutes = require('src/routes/reservations')
+const authRoutes = require('./src/routes/auth')
+const tourRoutes = require('./src/routes/tours')
+const reservationRoutes = require('./src/routes/reservations')
 
 app.use('/api/auth', authRoutes)
 app.use('/api/tours', tourRoutes)
 app.use('/api/reservations', reservationRoutes)
 
 // health
-app.get('/', (req, res) => res.json({ ok: true, proyecto: 'Proyecto 13 - Turismo' }))
+app.get('/', (req, res) => res.json({ ok: true, proyecto: 'Proyecto - Turismo' }))
 
 const PORT = process.env.PORT || 4000
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
-  console.log('MongoDB conectado')
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`));
 }).catch(err => {
   console.error('Error conectando a MongoDB:', err.message)
 })
